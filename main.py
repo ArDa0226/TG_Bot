@@ -1,6 +1,6 @@
-from aiogram import Bot, Dispatcher, F
+from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
-from aiogram.types import Message, ContentType
+from aiogram.types import Message
 
 BOT_TOKEN = '7393565379:AAF0eftofZCKOuUHWCcmO2gPeSkbhYyw6xo'
 
@@ -19,15 +19,15 @@ async def process_help_commad(message: Message):
                          'я пришлю тебе твое сообщение')
 
 
-@dp.message(F.photo)
-async def send_photo_echo(message: Message):
-    await message.reply_photo(message.photo[0].file_id)
-
-
 @dp.message()
 async def send_echo(message: Message):
-    await message.reply(text=message.text)
-
+    try:
+        await message.send_copy(chat_id=message.chat.id)
+    except TypeError:
+        await message.reply(
+            text='Данный тип апдейтов не поддерживается '
+                 'методом send_copy'
+        )
 
 
 
