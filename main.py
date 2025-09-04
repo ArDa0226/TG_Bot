@@ -1,6 +1,7 @@
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
 from aiogram.types import Message
+from attr.filters import exclude
 
 BOT_TOKEN = '7393565379:AAF0eftofZCKOuUHWCcmO2gPeSkbhYyw6xo'
 
@@ -19,17 +20,26 @@ async def process_help_commad(message: Message):
                          'я пришлю тебе твое сообщение')
 
 
-@dp.message()
-async def send_echo(message: Message):
-    try:
-        await message.send_copy(chat_id=message.chat.id)
-    except TypeError:
-        await message.reply(
-            text='Данный тип апдейтов не поддерживается '
-                 'методом send_copy'
-        )
-    with open('update.json', 'w') as json_file:
-        json_file.write(message.model_dump_json(indent=4, exclude_none=True))
+# @dp.message()
+# async def send_echo(message: Message):
+#     try:
+#         await message.send_copy(chat_id=message.chat.id)
+#     except TypeError:
+#         await message.reply(
+#             text='Данный тип апдейтов не поддерживается '
+#                  'методом send_copy'
+#         )
+#     with open('update.json', 'w') as json_file:
+#         json_file.write(message.model_dump_json(indent=4, exclude_none=True))
+
+
+@dp.message(F.voice)
+async def process_sent_voice(message: Message):
+    print(message)
+    await message.answer(text='Вы отправили голосовое сообщение')
+    with open('voice_update.json', 'w') as voice_json:
+        voice_json.write(message.model_dump_json(indent=4, exclude_none=True))
+
 
 
 
