@@ -41,6 +41,11 @@ async def process_sent_voice(message: Message):
         voice_json.write(message.model_dump_json(indent=4, exclude_none=True))
 
 
+@dp.message()
+async def process_any_update(message: Message):
+    with open('any.json', 'w') as any_json:
+        any_json.write(message.model_dump_json(indent=4, exclude_none=True))
+    await message.answer(text='Вы что-то прислали...')
 
 
 
