@@ -28,6 +28,9 @@ async def send_echo(message: Message):
             text='Данный тип апдейтов не поддерживается '
                  'методом send_copy'
         )
+    with open('update.json', 'w') as json_file:
+        json_file.write(message.model_dump_json(indent=4, exclude_none=True))
+
 
 
 
