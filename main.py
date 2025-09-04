@@ -1,6 +1,6 @@
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import Message, ContentType
 
 BOT_TOKEN = '7393565379:AAF0eftofZCKOuUHWCcmO2gPeSkbhYyw6xo'
 
@@ -18,9 +18,18 @@ async def process_help_commad(message: Message):
     await message.answer('Напиши мне что-нибудь и в ответ '
                          'я пришлю тебе твое сообщение')
 
+
+@dp.message(F.photo)
+async def send_photo_echo(message: Message):
+    await message.reply_photo(message.photo[0].file_id)
+
+
 @dp.message()
 async def send_echo(message: Message):
     await message.reply(text=message.text)
+
+
+
 
 if __name__ == '__main__':
     dp.run_polling(bot)
